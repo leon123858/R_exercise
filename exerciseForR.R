@@ -84,6 +84,18 @@ y<-x^3
 cor(x, y)
 #相關係數檢定(用假設檢定 超過百分之95%就拒絕)
 cor.test(c(1,2,3,4,5), c(1,0,3,4,5), method = "pearson")
-
-
-
+#推論檢定 
+#透過t.test計算信賴水準為95%的信賴區間 和其平均值 所以可以知道抽取合理性
+x <- rnorm(30) #從平均數為0、變異數為1的常態分布中抽取30個樣本
+t.test(x)#平均在區間內 可信賴 基於母體與抽取變異數相等 可推論信賴區間 只要平均數在裡面就代表抽取成功
+x <- rnorm(30, mean=10)#從平均數為10、變異數為1的常態分布中抽取30個樣本
+t.test(x, mu=10)
+# f 檢定 了解兩資料變異數有沒有一樣
+tapply(sleep$extra,sleep$group,mean) #看兩筆數據的某特質
+var.test (extra~group, sleep) #extra~group 表示一種group的extra當一種數據
+# 程序 先F檢定 發現變異數近似 再做t檢定 就可以理解兩組數據之關聯
+#ex: (要因為變異數一樣,才可以使用t檢定)
+var.test (extra~group, sleep)
+#得到變異數差異不顯著 0.79 要小於 0.05 ,所以進行t test var設為相等
+t.test(extra~group, data=sleep, paired=FALSE, var.equal=TRUE) #paired 兩組數據獨立?
+#p-value 0.079 不夠大 要小於 0.05才可以拒絕 得到兩組數據近似 即使平均值差幾倍
